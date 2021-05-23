@@ -13,8 +13,12 @@ def portfolio_cost(filename):
                 continue
 
             stock_name, shares_num, stock_price = line.strip().split(',')
-            all_shares_price += int(shares_num) * float(stock_price)
-    
+            try:
+                all_shares_price += int(shares_num) * float(stock_price)
+            except ValueError:
+                # we can raise a warning instead using "raise Warning(msg)"
+                print('Missing Field encountered. Skipping the corresponding line.')
+
     return all_shares_price
 
 cost = portfolio_cost('Data/portfolio.csv')
