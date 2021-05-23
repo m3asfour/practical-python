@@ -26,7 +26,7 @@ while principal > 0:
     if overpayment:
         principal += overpayment
         total_paid += overpayment
-        
-    print(f'{current_month:<6}|  {total_paid:<12.2f}|  {principal:.2f}')
+
+    print(f'>> {current_month:<4}  |  {total_paid:^12.2f}|  {principal:^12.2f}')
 
 print(f'Total Paid {total_paid:0.2f}\nMonths {current_month}')
