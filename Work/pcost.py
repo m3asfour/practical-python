@@ -2,17 +2,22 @@
 #
 # Exercise 1.27
 
+import csv
+
+
 def portfolio_cost(filename):
     line_num = 0
     all_shares_price = 0
 
     with open(filename, 'rt') as f:
-        for line in f:
+        lines = csv.reader(f)
+
+        for line in lines:
             line_num += 1
             if line_num == 1:
                 continue
 
-            stock_name, shares_num, stock_price = line.strip().split(',')
+            stock_name, shares_num, stock_price = line
             try:
                 all_shares_price += int(shares_num) * float(stock_price)
             except ValueError:
