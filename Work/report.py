@@ -1,6 +1,6 @@
 # report.py
 #
-# Exercise 2.5
+# Exercise 2.6
 
 
 import csv
@@ -25,7 +25,27 @@ def read_portfolio(filename):
                 'name': row[0], 
                 'shares': int(row[1]),
                 'price': float(row[2])}
-                
+
             portfolio.append(holding)
 
     return portfolio    
+
+
+def read_prices(filename):
+    """reads the stock prices from the csv file
+
+    Args:
+        filename (str): file path of the prices csv file
+
+    Returns:
+        dict: a dictionary of prices by stock name
+    """
+    prices = {}
+
+    f = open(filename, 'r')    # parse the file
+    rows = csv.reader(f)       # skip header
+    for row in rows:           # loop over lines
+        if len(row):           # check if not an empty line
+            prices[row[0]] = float(row[1])
+
+    return prices
