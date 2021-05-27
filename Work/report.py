@@ -1,6 +1,6 @@
 # report.py
 #
-# Exercise 2.7
+# Exercise 2.9
 
 
 import csv
@@ -51,17 +51,31 @@ def read_prices(filename):
     return prices
 
 
+def make_report(portfolio, prices):
+    """creates report data as a list of tuples
+
+    Args:
+        portfolio (list): a list of dictionaries of the stocks
+        prices (dict): a dictionary of current stock prices
+    
+    Returns:
+        list: a list of tuples containing report data
+    """
+    report = []
+    for stock in portfolio:
+        # stock info: name, #shares, current price, change in price
+        stock_info = ( 
+            stock['name'], 
+            stock['shares'],
+            prices[stock['name']],
+            prices[stock['name']] - stock['price']
+        )
+        report.append(stock_info)
+    return report
+
+
 # read the portfolio and the prices
 portfolio = read_portfolio('Data/portfolio.csv')
 prices = read_prices('Data/prices.csv')
+report = make_report(portfolio, prices)
 
-total_cost = 0.0    # total cost of buying all stock shares
-total_value = 0.0   # current value of all stock shares
-
-for stock in portfolio: # loop over stocks in portfolio
-    # add this stock shares cost and value
-    total_cost += stock['price'] * stock['shares']
-    total_value += prices[stock['name']] * stock['shares']
-
-print(f'Current Stocks Value: {total_value:0.2f}')
-print(f'Net Profit (Gain/Loss): {total_value-total_cost:0.2f}')
