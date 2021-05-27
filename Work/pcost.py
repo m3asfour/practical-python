@@ -1,6 +1,6 @@
 # pcost.py
 #
-# Exercise 2.15
+# Exercise 2.16
 
 import csv
 import sys
@@ -19,12 +19,12 @@ def portfolio_cost(filename):
 
     with open(filename, 'rt') as f:
         lines = csv.reader(f)   # read the file and parse it
-        header = next(lines)    # skip the header line
+        headers = next(lines)    # skip the header line
 
         for idx, line in enumerate(lines):  # loop over lines
-            stock_name, shares_num, stock_price = line
+            record = dict(zip(headers, line))   # a dictionary with header keys
             try:
-                total_price += int(shares_num) * float(stock_price)
+                total_price += int(record['shares']) * float(record['price'])
             except ValueError:
                 # we can raise a warning instead using "raise Warning(msg)"
                 print(f'Row {idx+1}: Missing Field encountered: {line}')

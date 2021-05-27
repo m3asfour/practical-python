@@ -1,9 +1,10 @@
 # report.py
 #
-# Exercise 2.12
+# Exercise 2.16
 
 
 import csv
+import sys
 
 def read_portfolio(filename):
     """parses a csv file into a list of tuples
@@ -21,11 +22,9 @@ def read_portfolio(filename):
         headers = next(rows)        # skip the header line
         for row in rows:            # loop over lines
             # cast line contents into proper datatypes
-            holding = {
-                'name'  : row[0], 
-                'shares': int(row[1]),
-                'price' : float(row[2])}
-
+            holding = dict(zip(headers, row))
+            holding['shares'] = int(holding['shares'])
+            holding['price'] = float(holding['price'])
             portfolio.append(holding)
 
     return portfolio    
@@ -74,8 +73,11 @@ def make_report(portfolio, prices):
     return report
 
 
+# grab the filename from terminal
+filename = sys.argv[1] if len(sys.argv) == 2 else 'Data/portfolio.csv'
+
 # read the portfolio and the prices
-portfolio = read_portfolio('Data/portfolio.csv')
+portfolio = read_portfolio(filename)
 prices = read_prices('Data/prices.csv')
 report = make_report(portfolio, prices)
 
