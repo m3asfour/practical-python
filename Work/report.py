@@ -1,6 +1,6 @@
 # report.py
 #
-# Exercise 2.10
+# Exercise 2.11
 
 
 import csv
@@ -78,6 +78,11 @@ def make_report(portfolio, prices):
 portfolio = read_portfolio('Data/portfolio.csv')
 prices = read_prices('Data/prices.csv')
 report = make_report(portfolio, prices)
+
+# print header and dashes
+headers = ('Name', 'Shares', 'Price', 'Change')
+print(' '.join([f'{header:>10s}' for header in headers]))
+print(' '.join(['-'*10 for header in headers])) # or using f'{"":->10s}'
 
 # print the report data
 for name, shares, price, change in report:
