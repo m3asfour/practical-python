@@ -1,6 +1,6 @@
 # report.py
 #
-# Exercise 2.11
+# Exercise 2.12
 
 
 import csv
@@ -86,4 +86,5 @@ print(' '.join(['-'*10 for header in headers])) # or using f'{"":->10s}'
 
 # print the report data
 for name, shares, price, change in report:
-        print(f'{name:>10s} {shares:>10d} {price:>10.2f} {change:>10.2f}')
+    # using nested formmated strings f'{ f"{}" }'
+    print(f'{name:>10s} {shares:>10d} {f"${price:>0.2f}":>10s} {change:>10.2f}')
