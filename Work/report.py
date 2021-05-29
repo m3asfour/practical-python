@@ -23,8 +23,11 @@ def read_portfolio(filename):
         for row in rows:            # loop over lines
             # cast line contents into proper datatypes
             holding = dict(zip(headers, row))
-            holding['shares'] = int(holding['shares'])
-            holding['price'] = float(holding['price'])
+            # check that the values aren't missing before casting
+            if holding['shares']:
+                holding['shares'] = int(holding['shares'])
+            if holding['price']:
+                holding['price'] = float(holding['price'])
             portfolio.append(holding)
 
     return portfolio    
@@ -87,14 +90,24 @@ def print_report(report):
     # print the report data
     for name, shares, price, change in report:
         # using nested formmated strings f'{ f"{}" }'
-        print(f'{name:>10s} {shares:>10d} {f"${price:>0.2f}":>10s} {change:>10.2f}')
+        print(f'{name:>10} {shares:>10} {f"${price:>0.2f}":>10} {change:>10.2f}')
 
 
-# grab the filename from terminal
-filename = sys.argv[1] if len(sys.argv) == 2 else 'Data/portfolio.csv'
+def portfolio_report(portfolio_file, prices_file):
+    """parses the portfolio, computes the report's values, and prints it
 
-# read the portfolio and the prices
-portfolio = read_portfolio(filename)
-prices = read_prices('Data/prices.csv')
-report = make_report(portfolio, prices)
-print_report(report)    # print the report
+    Args:
+        portfolio_file (str): filepath of the portfolio csv file
+        prices_file ([type]): filepath of the prices csv file
+    """
+    # grab the filename from terminal if provided
+    filename = sys.argv[1] if len(sys.argv) == 2 else portfolio_file
+
+    # read the portfolio and the prices
+    portfolio = read_portfolio(filename)
+    prices = read_prices(prices_file)
+    report = make_report(portfolio, prices)
+    print_report(report)    # print the report
+
+
+portfolio_report('Data/portfolio.csv', 'Data/prices.csv')
