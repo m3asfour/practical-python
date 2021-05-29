@@ -1,10 +1,10 @@
 # fileparse.py
 #
-# Exercise 3.6
+# Exercise 3.7
 
 import csv
 
-def parse_csv(filename, select=None, types=None, has_headers=False):
+def parse_csv(filename, select=None, types=None, has_headers=True, delimiter=','):
     """Parse a CSV file into a list of records with safe selection of columns
 
     Args:
@@ -12,12 +12,13 @@ def parse_csv(filename, select=None, types=None, has_headers=False):
         select (list): list of column names to include
         types (list): list of types to cast the row values into
         has_headers (bool): a flag to indicate if the csv file has a header
+        delimiter (str): the delimiter to parse each line by
 
     Returns:
         [list]: list of dictionaries containing csv parsed data
     """
     with open(filename) as f:
-        rows = csv.reader(f)
+        rows = csv.reader(f, delimiter=delimiter)
 
         # Read the file headers if the csv file has a headers row
         headers = next(rows) if has_headers else None
