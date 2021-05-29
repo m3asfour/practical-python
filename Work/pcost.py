@@ -1,8 +1,8 @@
 # pcost.py
 #
-# Exercise 3.14
+# Exercise 3.15
 
-import csv
+import os
 import sys
 import report
 
@@ -26,11 +26,13 @@ def portfolio_cost(filename):
     
     return total_price
 
-# grab the filename form the terminal
+
+def main(cmd_lines):
+    os.system(f'python ' + ' '.join(cmd_lines))
+
+
+# check if filepaths were passed to generate a portfolio cost
 if len(sys.argv) == 2:
     filename = sys.argv[1]
-else:
-    filename = 'Data/portfolio.csv'
-
-cost = portfolio_cost(filename)
-print(f'Total cost: {cost:0.2f}')
+    cost = portfolio_cost(filename)
+    print(f'Total cost: {cost:0.2f}')

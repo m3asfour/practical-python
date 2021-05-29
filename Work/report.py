@@ -1,10 +1,10 @@
 # report.py
 #
-# Exercise 3.12
+# Exercise 3.15
 
 
-import csv
 import sys
+import os
 import fileparse
 
 def read_portfolio(filename):
@@ -95,4 +95,12 @@ def portfolio_report(portfolio_file, prices_file):
     print_report(report)    # print the report
 
 
-portfolio_report('Data/portfolio.csv', 'Data/prices.csv')
+def main(cmd_lines):
+    os.system(f'python ' + ' '.join(cmd_lines))
+
+
+# check if filepaths were passed to generate a report
+if len(sys.argv) > 1:
+    portfolio_csv = sys.argv[1]
+    prices_csv = sys.argv[2] if len(sys.argv) == 3 else 'Data/prices.csv'
+    portfolio_report(portfolio_csv, prices_csv)
