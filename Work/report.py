@@ -1,10 +1,11 @@
 # report.py
 #
-# Exercise 2.16
+# Exercise 3.12
 
 
 import csv
 import sys
+import fileparse
 
 def read_portfolio(filename):
     """parses a csv file into a list of tuples
@@ -15,21 +16,10 @@ def read_portfolio(filename):
     Returns:
         list: list of tuples. each tuple contains info of one line
     """
-    portfolio = []
-
-    with open(filename, 'rt') as f:
-        rows = csv.reader(f)        # parse the csv file
-        headers = next(rows)        # skip the header line
-        for row in rows:            # loop over lines
-            # cast line contents into proper datatypes
-            holding = dict(zip(headers, row))
-            # check that the values aren't missing before casting
-            if holding['shares']:
-                holding['shares'] = int(holding['shares'])
-            if holding['price']:
-                holding['price'] = float(holding['price'])
-            portfolio.append(holding)
-
+    # use the fileparse module
+    portfolio = fileparse.parse_csv(filename, 
+                                    select=['name', 'shares','price'],
+                                    types=[str, int, float])
     return portfolio    
 
 
@@ -42,14 +32,9 @@ def read_prices(filename):
     Returns:
         dict: a dictionary of prices by stock name
     """
-    prices = {}
-
-    f = open(filename, 'r')    # parse the file
-    rows = csv.reader(f)       # skip header
-    for row in rows:           # loop over lines
-        if len(row):           # check if not an empty line
-            prices[row[0]] = float(row[1])
-
+    # use the fileparse module
+    prices = fileparse.parse_csv(filename, types=[str, float], has_headers=False)
+    prices = dict(prices)   # convert into a dictionary
     return prices
 
 
