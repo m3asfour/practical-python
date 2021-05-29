@@ -73,6 +73,23 @@ def make_report(portfolio, prices):
     return report
 
 
+def print_report(report):
+    """takes the list of lines info to print and prints them
+
+    Args:
+        report (list): a list containing the lines to print
+    """
+# print header and dashes
+    headers = ('Name', 'Shares', 'Price', 'Change')
+    print(' '.join([f'{header:>10s}' for header in headers]))
+    print(' '.join(['-'*10 for header in headers])) # or using f'{"":->10s}'
+
+    # print the report data
+    for name, shares, price, change in report:
+        # using nested formmated strings f'{ f"{}" }'
+        print(f'{name:>10s} {shares:>10d} {f"${price:>0.2f}":>10s} {change:>10.2f}')
+
+
 # grab the filename from terminal
 filename = sys.argv[1] if len(sys.argv) == 2 else 'Data/portfolio.csv'
 
@@ -80,13 +97,4 @@ filename = sys.argv[1] if len(sys.argv) == 2 else 'Data/portfolio.csv'
 portfolio = read_portfolio(filename)
 prices = read_prices('Data/prices.csv')
 report = make_report(portfolio, prices)
-
-# print header and dashes
-headers = ('Name', 'Shares', 'Price', 'Change')
-print(' '.join([f'{header:>10s}' for header in headers]))
-print(' '.join(['-'*10 for header in headers])) # or using f'{"":->10s}'
-
-# print the report data
-for name, shares, price, change in report:
-    # using nested formmated strings f'{ f"{}" }'
-    print(f'{name:>10s} {shares:>10d} {f"${price:>0.2f}":>10s} {change:>10.2f}')
+print_report(report)    # print the report
