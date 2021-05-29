@@ -14,7 +14,7 @@ def read_portfolio(filename):
         filename (str): the path of the csv file
 
     Returns:
-        list: list of tuples. each tuple contains info of one line
+        list: list of dictionaries. each tuple contains info of one line
     """
     # use the fileparse module
     portfolio = fileparse.parse_csv(filename, 
