@@ -1,6 +1,6 @@
 # fileparse.py
 #
-# Exercise 3.8
+# Exercise 3.9
 
 import csv
 
@@ -45,19 +45,26 @@ def parse_csv(filename, select=None, types=None, has_headers=True, delimiter=','
         if not types:
             types = [str for h in headers]
 
-        for row in rows:
+        for row_idx, row in enumerate(rows):
             if not row:    # Skip rows with no data
                 continue
-            # cast the selected column data into the corresponding type
-            row_indices = indices if indices else range(len(row))
-            parsed_row = [val_type(row[col_idx]) for val_type, col_idx in zip(types, row_indices)]
-            
-            # store in a dictionary if headers exist, otherwise cast into a tuple
-            if headers:
-                record = dict(zip(headers, parsed_row))
-            else:
-                record = tuple(parsed_row)
 
-            records.append(record)
+            try:
+                # cast the selected column data into the corresponding type
+                row_indices = indices if indices else range(len(row))
+                parsed_row = [val_type(row[col_idx]) for val_type, col_idx in zip(types, row_indices)]
+                
+                # store in a dictionary if headers exist, otherwise cast into a tuple
+                if headers:
+                    record = dict(zip(headers, parsed_row))
+                else:
+                    record = tuple(parsed_row)
+
+                records.append(record)
+            
+            except ValueError as error:  # catch record creation value errors
+                # print the reason of the error
+                print(f'Row {row_idx+1}: Couldn\'t convert {row}')
+                print(f'Row {row_idx+1}: Reason {error}')
 
     return records
