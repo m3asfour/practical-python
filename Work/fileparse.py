@@ -1,6 +1,6 @@
 # fileparse.py
 #
-# Exercise 3.17
+# Exercise 3.18
 
 import gzip
 
