@@ -1,10 +1,11 @@
 # fileparse.py
 #
-# Exercise 3.9
+# Exercise 3.10
 
 import csv
 
-def parse_csv(filename, select=None, types=None, has_headers=True, delimiter=','):
+def parse_csv(filename, select=None, types=None, has_headers=True, 
+                delimiter=',', silence_errors=False):
     """Parse a CSV file into a list of records with safe selection of columns
 
     Args:
@@ -13,6 +14,7 @@ def parse_csv(filename, select=None, types=None, has_headers=True, delimiter=','
         types (list): list of types to cast the row values into
         has_headers (bool): a flag to indicate if the csv file has a header
         delimiter (str): the delimiter to parse each line by
+        silence_errors (bool): a flag to supress error message in the terminal
 
     Returns:
         [list]: list of dictionaries containing csv parsed data
@@ -63,8 +65,9 @@ def parse_csv(filename, select=None, types=None, has_headers=True, delimiter=','
                 records.append(record)
             
             except ValueError as error:  # catch record creation value errors
-                # print the reason of the error
-                print(f'Row {row_idx+1}: Couldn\'t convert {row}')
-                print(f'Row {row_idx+1}: Reason {error}')
+                if not silence_errors:
+                    # print the reason of the error
+                    print(f'Row {row_idx+1}: Couldn\'t convert {row}')
+                    print(f'Row {row_idx+1}: Reason {error}')
 
     return records
