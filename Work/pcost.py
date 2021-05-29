@@ -1,6 +1,6 @@
 # pcost.py
 #
-# Exercise 3.15
+# Exercise 3.16
 
 import os
 import sys
@@ -31,8 +31,8 @@ def main(cmd_lines):
     os.system(f'python ' + ' '.join(cmd_lines))
 
 
-# check if filepaths were passed to generate a portfolio cost
-if len(sys.argv) == 2:
+# check if filepaths were passed to generate a portfolio cost and that the script is executed (not imported)
+if len(sys.argv) == 2 and sys.argv[0] == 'pcost.py':
     filename = sys.argv[1]
     cost = portfolio_cost(filename)
     print(f'Total cost: {cost:0.2f}')
