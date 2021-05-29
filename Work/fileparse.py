@@ -1,14 +1,17 @@
 # fileparse.py
 #
-# Exercise 3.5
+# Exercise 3.6
 
 import csv
 
-def parse_csv(filename, select=None, types=None):
+def parse_csv(filename, select=None, types=None, has_headers=False):
     """Parse a CSV file into a list of records with safe selection of columns
 
     Args:
         filename (str): filepath of the csv file
+        select (list): list of column names to include
+        types (list): list of types to cast the row values into
+        has_headers (bool): a flag to indicate if the csv file has a header
 
     Returns:
         [list]: list of dictionaries containing csv parsed data
@@ -16,12 +19,13 @@ def parse_csv(filename, select=None, types=None):
     with open(filename) as f:
         rows = csv.reader(f)
 
-        # Read the file headers
-        headers = next(rows)
+        # Read the file headers if the csv file has a headers row
+        headers = next(rows) if has_headers else None
+        indices = None   # indices of selected columns 
         records = []
 
         # select the specified headers only and the indices of the corresponding value
-        if select:
+        if select and headers: # there must be headers to select from
             # select columns that exist in headers (any colname could be passed)
             exist_select = [colname for colname in select if colname in headers]
             indices = [headers.index(col) for col in exist_select]
@@ -31,9 +35,6 @@ def parse_csv(filename, select=None, types=None):
             if len(exist_select) != len(select):
                 print(f'Columns not found: {[colname for colname in select if colname not in exist_select]}')
 
-        else:
-            indices = range(len(headers))   # all values in the row if no headers were selected
-
         # default the types to str if not passeed
         if not types:
             types = [str for h in headers]
@@ -42,7 +43,15 @@ def parse_csv(filename, select=None, types=None):
             if not row:    # Skip rows with no data
                 continue
             # cast the selected column data into the corresponding type
-            record = dict(zip(headers, [val_type(row[col_idx]) for val_type, col_idx in zip(types, indices)]))
+            row_indices = indices if indices else range(len(row))
+            parsed_row = [val_type(row[col_idx]) for val_type, col_idx in zip(types, row_indices)]
+            
+            # store in a dictionary if headers exist, otherwise cast into a tuple
+            if headers:
+                record = dict(zip(headers, parsed_row))
+            else:
+                record = tuple(parsed_row)
+
             records.append(record)
 
     return records
